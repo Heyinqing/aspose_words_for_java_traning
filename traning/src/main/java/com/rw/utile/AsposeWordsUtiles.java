@@ -5,11 +5,11 @@ import com.aspose.words.License;
 import java.io.InputStream;
 
 public class AsposeWordsUtiles {
-    public boolean GetLicense() {
+    public static boolean GetLicense() {
         boolean result = false;
         try {
             InputStream license = AsposeWordsUtiles.class.getClassLoader().getResourceAsStream(
-                    "\\license.xml"); // license路径
+                    "E:\\project\\aspose_words_for_java_traning\\traning\\src\\main\\resources\\template\\license.xml"); // license路径
             License aposeLic = new License();
             aposeLic.setLicense(license);
             result = true;
