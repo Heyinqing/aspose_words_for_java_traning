@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
+import java.util.List;
 
 public class Trening{
 
@@ -28,7 +28,6 @@ public class Trening{
         pageSetup.setRightMargin(90);
 
 
-
         totalTitle(builder);
 
         firstLevelTitle("一、顾客满意管理基本情况",builder);
@@ -38,18 +37,8 @@ public class Trening{
         textPart("{年份}年，公司{多少}家单位开展了产品{项目状态}阶段的顾客满意度调查，发出顾客满意度调查表{多少}份，回收调查表{多少}份，涉及调查单位{多少}家，调查覆盖率{百分比}。\n" +
                 "根据各单位的顾客满意度数值进行加权平均，得出公司产品{项目状态}阶段平均顾客满意度为{百分比}。",builder);
 
-        ParagraphFormat paragraphFormat = builder.getParagraphFormat();
-        paragraphFormat.clearFormatting();
-        Font font = builder.getFont();
-        font.clearFormatting();
-        font.setSize(12);
-        paragraphFormat.setAlignment(ParagraphAlignment.length);
         Table table = builder.startTable();
-        builder.insertCell();
-        table.autoFit(AutoFitBehavior.AUTO_FIT_TO_WINDOW);
-        table.setAlignment(ParagraphAlignment.CENTER);
-        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
-        builder.write("单位");
+
         HashMap<String, String> hashMap = new HashMap<String, String>(){{
             this.put("长兴分公司","90.10");
             this.put("南通分公司","99.10");
@@ -60,31 +49,26 @@ public class Trening{
             this.put("南通传动","98.61");
         }};
 
-        Set<String> strings = hashMap.keySet();
-        //表格x轴
-        String[] array = strings.toArray(new String[0]);
+        //表格标题
+        String[] array = hashMap.keySet().toArray(new String[0]);
+
+        String[] contentTable = new String[array.length];
         //表格y轴
         double[] doubles = new double[array.length];
 
         for (int i = 0; i < array.length; i++) {
-
-            builder.insertCell();
-            builder.write(array[i]);
+            doubles[i] = Double.parseDouble(hashMap.get(array[i]));
+            contentTable[i] = hashMap.get(array[i])+"%";
         }
 
-        builder.endRow();
-        builder.insertCell();
-        builder.write("满意度");
+        //标题生成
+        titleTable(array,builder,table);
 
-        for (int i = 0; i < array.length; i++) {
+        //内容生成
+        List<String[]> content = new ArrayList<>();
+        content.add(contentTable);
+        contentTable(content,builder,table);
 
-            builder.insertCell();
-            String text = hashMap.get(array[i]);
-            doubles[i] = Double.valueOf(text);
-            builder.write(text+"%");
-        }
-        builder.endRow();
-        builder.endTable();
 
         builder.writeln();
 
@@ -92,6 +76,12 @@ public class Trening{
 
         builder.writeln();
         secondLevelTitle("（二）各单位情况",builder);
+
+
+        for (int i = 0; i < 3; i++) {
+            threeLevelTitle((i+1)+".{单位名称}",builder);
+            textPart("{年份}年，{单位名称}单位开展了产品{项目状态}阶段的顾客满意度调查，发出顾客满意度调查表{发出}份，回收调查表{回收}份，涉及调查单位{产于}家，调查覆盖率{百分比}。",builder);
+        }
 
 
         nodes.save("E:\\office\\测试文档1.docx");
@@ -104,10 +94,6 @@ public class Trening{
     public void totalTitle(DocumentBuilder builder){
         Font font = builder.getFont();
         ParagraphFormat paragraphFormat = builder.getParagraphFormat();
-//        paragraphFormat.clearFormatting();
-        //段落符号
-        //paragraphFormat.setKeepTogether(true);
-
 
         font.setSize(22);
         font.setBold(true);
@@ -123,9 +109,9 @@ public class Trening{
         builder.writeln("上海振华重工{年份}年度产品{项目状态}阶段");
         builder.writeln("顾客满意度报告");
         builder.writeln();
-        //重置段落和字体样式
+        //重置字体样式
         font.clearFormatting();
-//        paragraphFormat.clearFormatting();
+
     }
 
     /**
@@ -154,6 +140,9 @@ public class Trening{
 
         //插入字体
         builder.writeln(content);
+
+        //重置字体样式
+        font.clearFormatting();
     }
 
     /**
@@ -181,6 +170,38 @@ public class Trening{
 
         //插入字体
         builder.writeln(content);
+
+        //重置字体样式
+        font.clearFormatting();
+    }
+
+    /**
+     * 三级标题
+     * @param content
+     * @param builder
+     */
+    private void threeLevelTitle(String content,DocumentBuilder builder){
+        //字体操作
+        Font font = builder.getFont();
+        //段落操作
+        ParagraphFormat paragraphFormat = builder.getParagraphFormat();
+
+        //行缩进
+        paragraphFormat.setFirstLineIndent(32);
+        //对齐
+        paragraphFormat.setAlignment(ParagraphAlignment.length);
+        //段落符号
+        paragraphFormat.setKeepTogether(true);
+
+        font.setSize(16);
+        font.setName("仿宋_GB2312");
+        font.setColor(Color.BLACK);
+        font.setUnderline(Underline.length);
+        font.setBold(true);
+        //插入字体
+        builder.writeln(content);
+        //重置字体样式
+        font.clearFormatting();
     }
 
     /**
@@ -208,8 +229,18 @@ public class Trening{
 
         //插入字体
         builder.writeln(content);
+        //重置字体样式
+        font.clearFormatting();
     }
 
+    /**
+     * 图标生成
+     * @param content 标题
+     * @param array
+     * @param doubles
+     * @param builder
+     * @throws Exception
+     */
     public void graph(String content,String[] array,double[] doubles,DocumentBuilder builder) throws Exception {
 
         Chart chart = builder.insertChart(ChartType.COLUMN, 432, 252).getChart();
@@ -218,5 +249,77 @@ public class Trening{
         chart.getSeries().add(content,array,doubles);
         chart.getTitle().setText(content);
         chart.getLegend().setPosition(LegendPosition.BOTTOM);
+
+        builder.writeln();
+    }
+
+    /**
+     * 表格标题生成
+     * @param array
+     * @param builder
+     * @param table
+     * @throws Exception
+     */
+    public void titleTable(String[] array,DocumentBuilder builder,Table table) throws Exception {
+
+        ParagraphFormat paragraphFormat = builder.getParagraphFormat();
+
+        Font font = builder.getFont();
+
+
+
+        paragraphFormat.setAlignment(ParagraphAlignment.CENTER);
+        paragraphFormat.clearFormatting();
+
+        font.clearFormatting();
+        font.setSize(12);
+
+        builder.insertCell();
+        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+
+
+        for (String s : array) {
+            builder.insertCell();
+            builder.write(s);
+        }
+
+        builder.endRow();
+
+    }
+
+    /**
+     * 表格内容生成
+     * @param contents
+     * @param builder
+     * @param table
+     * @throws Exception
+     */
+    private void contentTable(List<String[]> contents,DocumentBuilder builder,Table table) throws Exception {
+        ParagraphFormat paragraphFormat = builder.getParagraphFormat();
+
+        Font font = builder.getFont();
+
+        paragraphFormat.clearFormatting();
+        paragraphFormat.setAlignment(ParagraphAlignment.length);
+
+        font.clearFormatting();
+        font.setSize(12);
+
+        builder.insertCell();
+        builder.getCellFormat().setVerticalAlignment(CellVerticalAlignment.CENTER);
+
+        contents.forEach(content -> {
+            for (String aDouble : content) {
+                builder.insertCell();
+                builder.write(aDouble);
+            }
+        });
+
+
+        table.setAlignment(ParagraphAlignment.CENTER);
+        table.autoFit(AutoFitBehavior.AUTO_FIT_TO_WINDOW);
+
+        builder.endRow();
+        builder.endTable();
     }
 }
