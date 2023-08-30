@@ -31,10 +31,10 @@ public class AsposeWordsUtile {
 
     @Test
     public void trening() throws Exception {
-
-        if (!excelUtils.GetWordLicense()){
-            return;
-        }
+        //
+        // if (!excelUtils.GetWordLicense()){
+        //     return;
+        // }
 
 
         Document nodes = new Document();
@@ -97,29 +97,29 @@ public class AsposeWordsUtile {
         List<Map> basesCase = JSON.parseArray(dataTotalMap.get("basesCase").toString(), Map.class);
 
         builder.writeln();
-        secondLevelTitle("（二）各单位情况",builder);
-        for (int i = 0; i < basesCase.size(); i++) {
-
-            threeLevelTitle((i+1)+"."+basesCase.get(i).get("baseName").toString(),builder);
-            textPart(dataTotalMap.get("year")+"年，"+basesCase.get(i).get("sendNumber")+"单位开展了产品"+dataTotalMap.get("projectStatus")+"阶段的顾客满意度调查，" +
-                    "发出顾客满意度调查表"+basesCase.get(i).get("sendNumber")+"份，" +
-                    "回收调查表"+basesCase.get(i).get("recycleNumber")+"份，涉及调查单位"+basesCase.get(i).get("supervisorNumber")+"家，" +
-                    "调查覆盖率"+basesCase.get(i).get("coverage")+"%。",builder);
-
-            Object obj = basesCase.get(i).get("targets");
-            String string = JSON.toJSON(obj.toString()).toString();
-            Map beanMap = JSON.parseObject(string, Map.class);
-            Object[] objs = beanMap.keySet().toArray();
-            String[] title = new String[objs.length];
-            //表格y轴
-            double[] contentY = new double[objs.length];
-            //数据拆解
-            for (int j = 0; j < objs.length; j++) {
-              title[j] = objs[j].toString();
-              contentY[j] = Double.parseDouble(beanMap.get(title[j]).toString());
-            }
-            graph("各项指标客户满意度",title,contentY,builder);
-        };
+        // secondLevelTitle("（二）各单位情况",builder);
+        // for (int i = 0; i < basesCase.size(); i++) {
+        //
+        //     threeLevelTitle((i+1)+"."+basesCase.get(i).get("baseName").toString(),builder);
+        //     textPart(dataTotalMap.get("year")+"年，"+basesCase.get(i).get("sendNumber")+"单位开展了产品"+dataTotalMap.get("projectStatus")+"阶段的顾客满意度调查，" +
+        //             "发出顾客满意度调查表"+basesCase.get(i).get("sendNumber")+"份，" +
+        //             "回收调查表"+basesCase.get(i).get("recycleNumber")+"份，涉及调查单位"+basesCase.get(i).get("supervisorNumber")+"家，" +
+        //             "调查覆盖率"+basesCase.get(i).get("coverage")+"%。",builder);
+        //
+        //     Object obj = basesCase.get(i).get("targets");
+        //     String string = JSON.toJSON(obj.toString()).toString();
+        //     Map beanMap = JSON.parseObject(string, Map.class);
+        //     Object[] objs = beanMap.keySet().toArray();
+        //     String[] title = new String[objs.length];
+        //     //表格y轴
+        //     double[] contentY = new double[objs.length];
+        //     //数据拆解
+        //     for (int j = 0; j < objs.length; j++) {
+        //       title[j] = objs[j].toString();
+        //       contentY[j] = Double.parseDouble(beanMap.get(title[j]).toString());
+        //     }
+        //     graph("各项指标客户满意度",title,contentY,builder);
+        // };
 
 
 
@@ -137,14 +137,14 @@ public class AsposeWordsUtile {
 
         Map map = JSON.parseObject(dataTotalMap.get("basesOpinion").toString(), Map.class);
         List<String> baseOpinionTitle = new ArrayList<String>(map.keySet());
-        for (int i = 0; i <baseOpinionTitle.size(); i++) {
-            secondLevelTitle((i+2)+"."+baseOpinionTitle.get(i),builder);
-            titleTable(titleOpinion,builder,table);
-            List<Map> baseContentList = JSON.parseObject(map.get(baseOpinionTitle.get(i)).toString(),List.class);
-
-            contentTable(baseContentList,CUSTOMERINPUT,builder,table);
-            builder.writeln();
-        }
+        // for (int i = 0; i <baseOpinionTitle.size(); i++) {
+        //     secondLevelTitle((i+2)+"."+baseOpinionTitle.get(i),builder);
+        //     titleTable(titleOpinion,builder,table);
+        //     List<Map> baseContentList = JSON.parseObject(map.get(baseOpinionTitle.get(i)).toString(),List.class);
+        //
+        //     contentTable(baseContentList,CUSTOMERINPUT,builder,table);
+        //     builder.writeln();
+        // }
         builder.writeln();
         firstLevelTitle("三、顾客满意度分析",builder);
         builder.writeln();
@@ -160,6 +160,27 @@ public class AsposeWordsUtile {
         builder.writeln();
         builder.writeln();
 
+        builder.moveToMergeField("c1");
+        builder.getFont().setName("Wingdings 2");
+        builder.write("\u00A3");
+
+        builder.getFont().setName("Wingdings 2");
+        textPart("dsfasdfasdfasdfa",builder);
+        builder.writeln();
+
+
+
+        textPart("dsfasdfasdfasdfa",builder);
+        builder.moveToMergeField("c1");
+        builder.getFont().setName("Wingdings 2");
+        builder.write("\u0099");
+        textPart("dsfasdfasdfasdfa",builder);
+        builder.moveToMergeField("c1");
+        builder.getFont().setName("Wingdings 2");
+        builder.write("\u0098");
+        builder.getFont().setName("黑体");
+        builder.writeln("Very satisfied");
+        // textPart("dsfasdfasdfasdfa",builder);
         nodes.save("E:\\office\\"+dataTotalMap.get("year")+"产品"+dataTotalMap.get("projectStatus")+"阶段顾客满意度报告.docx");
         Date date1 = new Date();
         System.out.println(date1.getTime()-date.getTime());
@@ -285,7 +306,10 @@ public class AsposeWordsUtile {
      * @param content
      * @param builder
      */
-    private void textPart(String content,DocumentBuilder builder){
+    private void textPart(String content,DocumentBuilder builder) throws Exception {
+        builder.moveToMergeField("c1");
+        builder.getFont().setName("Wingdings 2");
+        builder.write("\u0052");
         //字体操作
         Font font = builder.getFont();
         //段落操作
@@ -343,11 +367,11 @@ public class AsposeWordsUtile {
     private void titleTable(String[] array,DocumentBuilder builder,Table table) throws Exception {
 
         ParagraphFormat paragraphFormat = builder.getParagraphFormat();
+        paragraphFormat.clearFormatting();
 
         Font font = builder.getFont();
 
         paragraphFormat.setAlignment(ParagraphAlignment.CENTER);
-        paragraphFormat.clearFormatting();
 
         font.clearFormatting();
         font.setSize(12);
