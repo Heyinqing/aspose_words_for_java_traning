@@ -276,7 +276,7 @@ public class AsposeWordsUtile {
      * @param content
      * @param builder
      */
-    private void threeLevelTitle(String content,DocumentBuilder builder){
+    void threeLevelTitle(String content,DocumentBuilder builder){
         //字体操作
         Font font = builder.getFont();
         //段落操作
@@ -306,10 +306,7 @@ public class AsposeWordsUtile {
      * @param content
      * @param builder
      */
-    private void textPart(String content,DocumentBuilder builder) throws Exception {
-        builder.moveToMergeField("c1");
-        builder.getFont().setName("Wingdings 2");
-        builder.write("\u0052");
+    void textPart(String content,DocumentBuilder builder){
         //字体操作
         Font font = builder.getFont();
         //段落操作
