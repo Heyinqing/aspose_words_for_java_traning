@@ -246,8 +246,10 @@ public class AsposeWordsToTwe {
             for (int i = 0; i < contents.size(); i++) {
                 JSONObject content = JSONUtil.parseObj(contents.get(i));
                 builder.moveToMergeField("c1");
+                //设置符号字体
                 font.setName("Wingdings 2");
                 if (content.getBool("choose")) {
+                    //插入符号（符号代码十六进制）
                     builder.write("\u0098");
                 } else {
                     builder.write("\u0099");
@@ -281,8 +283,10 @@ public class AsposeWordsToTwe {
             for (int i = 0; i < contents.size(); i++) {
                 JSONObject content = JSONUtil.parseObj(contents.get(i));
                 builder.moveToMergeField("c1");
+                //设置符号字体
                 font.setName("Wingdings 2");
                 if (content.getBool("choose")) {
+                    //插入符号（符号代码十六进制）
                     builder.write("\u0052");
                 } else {
                     builder.write("\u00A3");
