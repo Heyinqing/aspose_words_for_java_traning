@@ -58,8 +58,8 @@ public class AsposeWordsToTwe {
             // zipOutputStream.write(subject.toByteArray());
             int let = 0;
             byte[] bytes = new byte[1024];
-            while ((let = inputStream.read(bytes))>0){
-                zipOutputStream.write(bytes,0,let);
+            while ((let = inputStream.read(bytes)) > 0) {
+                zipOutputStream.write(bytes, 0, let);
             }
             // inputStream.close();
         }
@@ -83,7 +83,6 @@ public class AsposeWordsToTwe {
                     fis = new FileInputStream(file);
                     //  单个文件名称
                     zipOut.putNextEntry(new ZipEntry(file.getName()));
-
                     //	输出文件
                     int len = 0;
                     byte[] buffer = new byte[1024];
@@ -246,10 +245,10 @@ public class AsposeWordsToTwe {
             for (int i = 0; i < contents.size(); i++) {
                 JSONObject content = JSONUtil.parseObj(contents.get(i));
                 builder.moveToMergeField("c1");
-                //设置符号字体
+                // 设置符号字体
                 font.setName("Wingdings 2");
                 if (content.getBool("choose")) {
-                    //插入符号（符号代码十六进制）
+                    // 插入符号（符号代码十六进制）
                     builder.write("\u0098");
                 } else {
                     builder.write("\u0099");
@@ -283,10 +282,10 @@ public class AsposeWordsToTwe {
             for (int i = 0; i < contents.size(); i++) {
                 JSONObject content = JSONUtil.parseObj(contents.get(i));
                 builder.moveToMergeField("c1");
-                //设置符号字体
+                // 设置符号字体
                 font.setName("Wingdings 2");
                 if (content.getBool("choose")) {
-                    //插入符号（符号代码十六进制）
+                    // 插入符号（符号代码十六进制）
                     builder.write("\u0052");
                 } else {
                     builder.write("\u00A3");
